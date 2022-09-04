@@ -18,7 +18,8 @@ class Solution {
                         res.add(minires);
                         
                         while(left < right && nums[left + 1] == nums[left]) left++;
-                        while(left < right && nums[right - 1] == nums[right]) right--;
+                        //Only need to move one side 
+                        //while(left < right && nums[right - 1] == nums[right]) right--;
                         
                         left++;
                         right--;
