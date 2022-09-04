@@ -10,7 +10,8 @@ class Solution {
                 int right = nums.length - 1;
                 
                 while(right > left) {
-                    if(nums[left] + nums[right] == tar) {
+                    int sum = nums[left] + nums[right];
+                    if(sum == tar) {
                         List<Integer> minires = new ArrayList<>();
                         minires.add(nums[i]);
                         minires.add(nums[left]);
@@ -24,7 +25,7 @@ class Solution {
                         left++;
                         right--;
                     }
-                    else if(nums[left] + nums[right] > tar) {
+                    else if(sum > tar) {
                         right--;
                     }
                     else left++;
