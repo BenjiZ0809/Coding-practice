@@ -5,10 +5,10 @@ class Solution {
         int right = nums.length - 1;
         
         while(left <= right) {
-            while(left <= right && nums[left] == 0) {
+            while(left <= right && nums[left] <= 0) {
                 left++;
             }
-            while(left <= right && nums[right] != 0) {
+            while(left <= right && nums[right] > 0) {
                 right--;
             }
             if(left <= right) {
