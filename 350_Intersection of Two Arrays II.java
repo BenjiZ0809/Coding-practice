@@ -31,6 +31,7 @@ class Solution {
 //Wtih one HashMap
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
+        if(nums2.length < nums1.length) return intersect(nums2, nums1);
         
         HashMap<Integer, Integer> map = new HashMap<>();
         for(int num : nums1) {
