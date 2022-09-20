@@ -5,7 +5,7 @@ class Solution {
         int right = 0;
         int longest = 0;
         
-        while(right < s.length() - 1) {
+        while(right < s.length()) {
             if(!window.contains(s.charAt(right))) {
                 window.add(s.charAt(right));
                 right++;
