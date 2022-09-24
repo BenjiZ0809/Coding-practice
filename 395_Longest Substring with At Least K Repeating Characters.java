@@ -9,6 +9,7 @@ class Solution {
         for(int i=0; i<s.length(); i++) {
             if(hash[s.charAt(i) - 'a'] > 0 && hash[s.charAt(i) - 'a'] < k) {
                 fullStr = false;
+                break;
             }
         }
         if(fullStr) return s.length();
