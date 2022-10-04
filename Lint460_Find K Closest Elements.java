@@ -34,8 +34,6 @@ public class Solution {
         int right = nums.length - 1;
 
         while(left + 1 < right) {
-            System.out.println(left);
-            System.out.println(right);
             int mid = left + (right - left) / 2;
             if(nums[mid] < target) {
                 left = mid;
