@@ -59,8 +59,9 @@ public class Solution {
             else left = mid;
         }
 
-        if(helper(l, right) >= k) return right;
-        else return helper(l, left) >= k? left:0;
+        if(count(l, right) >= k) return right;
+        if(count(l, left) >= k) return left;
+        return 0;
     }
 
     private int helper(int[] nums, int len) {
