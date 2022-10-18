@@ -21,3 +21,26 @@ class Solution {
     }
 }
 
+
+//双队列 approach
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
+        List<TreeNode> q1 = new ArrayList<>();
+        q1.add(root);
+        
+        while(!q1.isEmpty()) {
+            List<TreeNode> q2 = new ArrayList<>();
+            List<Integer> level = new ArrayList<>();
+            for(TreeNode node:q1) level.add(node.val);
+            res.add(level);
+            for(TreeNode node:q1) {
+                if(node.left != null) q2.add(node.left);
+                if(node.right != null) q2.add(node.right);
+            }
+            q1 = q2;
+        }
+        return res;
+    }
+}
