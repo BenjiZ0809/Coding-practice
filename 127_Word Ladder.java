@@ -12,7 +12,16 @@ class Solution {
             String curWord = cur.word;
             int curDist = cur.distFromStart;
             if(curWord.equals(endWord)) curDist;
-            for()
+            for(int i=0; i<curWord.length(); i++) {
+                String key = curWord.substring(0, i) + "*" + curWord.substring(i+1, curWord.length());
+                List<String> neighbors = graph.getOrDefault(key, new ArrayList<>());
+                for(String neighbor:neighbors) {
+                    if(!visited.contains(neighbor)) {
+                        q.offer(new State(neighbor, curDist + 1));
+                        visited.add(neighbor);
+                    }
+                }
+            }
         }
     }
     
