@@ -57,3 +57,45 @@ class Solution {
         return topo;
     }
 }
+
+
+//simplified version
+class Solution {
+    public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
+        List<Integer>[] graph = new ArrayList[nums.length + 1];
+        int[] indegree = new int[nums.length + 1];
+        for(int num:nums) {
+            graph[num] = new ArrayList<>();
+        }
+        for(List<Integer> edge:sequences) {
+            for(int i=1; i<edge.size(); i++) {
+                int from = edge.get(i - 1);
+                int to = edge.get(i);
+                graph[from].add(to);
+                indegree[to]++;
+            }
+        }
+
+        Queue<Integer> q = new ArrayDeque<>();
+        List<Integer> topo = new ArrayList<>();
+        for(int i=1; i<indegree.length; i++) {
+            if(indegree[i] == 0) q.offer(i);
+        }
+
+        while(!q.isEmpty()) {
+            if(q.size() > 1) return false;
+            int cur = q.poll();
+            topo.add(cur);
+            for(int neighbor:graph[cur]) {
+                indegree[neighbor]--;
+                if(indegree[neighbor] == 0) q.offer(neighbor);
+            }
+        }
+
+        for(int i=0; i<nums.length; i++) {
+            if(nums[i] != topo.get(i)) return false;
+        }
+
+        return true;
+    }
+}
