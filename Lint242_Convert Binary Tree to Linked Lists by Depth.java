@@ -12,7 +12,7 @@ public class Solution {
         while(!q.isEmpty()) {
             int size = q.size();
             ListNode dummy = new ListNode(-1);
-            ListNode curListNode = new ListNode(-1);
+            ListNode curListNode = dummy;
             for(int i=0; i<size; i++) {
                 TreeNode cur = q.poll();
                 if(i == 0) {
