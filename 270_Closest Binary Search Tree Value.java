@@ -67,7 +67,7 @@ class Solution {
     }
 }
 
-//Approach 4 inOrder -> binary search (TLE)
+//Approach 4 inOrder -> binary search
 class Solution {
     public int closestValue(TreeNode root, double target) {
         inOrder(root);
