@@ -14,6 +14,7 @@ class Solution {
                 return;
             }
         }
+        if(num > 3) return;
 
         for(int i=index; i<s.length(); i++) {
             if(isValid(s, index, i)) {
