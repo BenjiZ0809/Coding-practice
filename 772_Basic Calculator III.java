@@ -1,3 +1,4 @@
+//reverse polish notation
 class Solution {
     public int calculate(String s) {
         List<String> list = getList(s);
@@ -72,5 +73,56 @@ class Solution {
             }
         } 
         return stack.peek();   
+    }
+}
+
+//easier approach with recursion
+class Solution {
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        int num = 0;
+        char sign = '+';
+
+        for(int i=0; i<s.length(); i++) {
+            if(Character.isDigit(s.charAt(i))) {
+                num = num * 10 + s.charAt(i) - '0';
+            }
+            else if(s.charAt(i) == '(') {
+                int count = 1;
+                int j = i + 1;
+                while(j < s.length()) {
+                    if(s.charAt(j) == '(') count++;
+                    if(s.charAt(j) == ')') count--;
+                    if(count == 0) break;
+                    j++;
+                }
+                num = calculate(s.substring(i + 1, j));
+                i = j;
+            }
+            
+            if(s.charAt(i) == '+' || s.charAt(i) == '-' || s.charAt(i) == '*' || s.charAt(i) == '/' || i == s.length() - 1) {
+                switch(sign) {
+                    case '+':
+                        stack.push(num);
+                        break;
+                    case '-':
+                        stack.push(-num);
+                        break;
+                    case '*':
+                        stack.push(stack.pop() * num);
+                        break;
+                    case '/':
+                        stack.push(stack.pop() / num);
+                        break;
+                }
+                num = 0;
+                sign = s.charAt(i);
+            }
+        }
+        int res = 0;
+        while(!stack.isEmpty()) {
+            res += stack.pop();
+        }
+        return res;
     }
 }
