@@ -2,7 +2,6 @@ class Solution {
     public int minCut(String s) {
         int n = s.length();
         boolean[][] palindrome = new boolean[n][n];
-
         for(int i=n-1; i>=0; i--) {
             for(int j=i; j<n; j++) {
                 if(i == j) {
@@ -10,15 +9,13 @@ class Solution {
                     continue;
                 }
                 if(s.charAt(i) == s.charAt(j)) {
-                    if(j == i + 1) {
+                    if(i + 1 == j) {
                         palindrome[i][j] = true;
                         continue;
                     }
-                    palindrome[i][j] = palindrome[i + 1][j - 1];
+                    else palindrome[i][j] = palindrome[i + 1][j - 1];
                 }
-                else {
-                    palindrome[i][j] = false;
-                }
+                else palindrome[i][j] = false;
             }
         }
 
@@ -28,9 +25,7 @@ class Solution {
         }
 
         for(int i=1; i<n; i++) {
-            if(palindrome[0][i]) {
-                dp[i] = 0;
-            }
+            if(palindrome[0][i]) dp[i] = 0;
             for(int j=0; j<i; j++) {
                 if(palindrome[j + 1][i]) {
                     dp[i] = Math.min(dp[i], dp[j] + 1);
