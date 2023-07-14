@@ -53,3 +53,118 @@ class Solution {
         return true;
     }
 }
+
+
+// Trie
+class Solution {
+    public List<String> findWords(char[][] board, String[] words) {
+        int n = board.length;
+        int m = board[0].length;
+        List<String> res = new ArrayList<>();
+        boolean[][] visited = new boolean[n][m];
+        StringBuilder sb = new StringBuilder();
+        Trie trie = new Trie();
+
+        for(String str:words) {
+            trie.insert(str);
+        }
+
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<m; j++) {
+                dfs(board, visited, i, j, sb, trie.root, res);
+            }
+        }
+        return res;
+    }
+
+    public void dfs(char[][] board, boolean[][] visited, int x, int y, StringBuilder sb, TrieNode node, List<String> res) {
+        if(node.isEnd()) {
+            res.add(sb.toString());
+            node.notEnd();
+        }
+        if(x < 0 || x >= board.length || y < 0 || y >= board[0].length) return;
+        if(visited[x][y]) return;
+
+        char ch = board[x][y];
+        if(!node.contains(ch)) return;
+
+        TrieNode parent = node;
+        node = node.get(ch);
+
+        sb.append(ch);
+        visited[x][y] = true;
+        dfs(board, visited, x + 1, y, sb, node, res);
+        dfs(board, visited, x - 1, y, sb, node, res);
+        dfs(board, visited, x, y + 1, sb, node, res);
+        dfs(board, visited, x, y - 1, sb, node, res);
+        visited[x][y] = false;
+        sb.deleteCharAt(sb.length() - 1);
+
+        int index = 0;
+        for(index=0; index<26; index++) {
+            if(node.contains(index)) break; 
+        }
+        if(index == 26) {
+            parent.links[ch - 'a'] = null;
+        }
+        return;
+
+    }
+
+    class TrieNode {
+        TrieNode[] links;
+        boolean isEnd;
+
+        public TrieNode() {
+            this.links = new TrieNode[26];
+            this.isEnd = false;
+        }
+
+        public void put(char ch) {
+            links[ch - 'a'] = new TrieNode();
+        }
+
+        public TrieNode get(char ch) {
+            return links[ch - 'a'];
+        }
+
+        public boolean contains(char ch) {
+            return links[ch - 'a'] != null;
+        }
+
+        public boolean contains(int i) {
+            return links[i] != null;
+        }
+
+        public void setEnd() {
+            this.isEnd = true;
+        }
+
+        public void notEnd() {
+            this.isEnd = false;
+        }
+
+        public boolean isEnd() {
+            return this.isEnd;
+        }
+    }
+
+    class Trie {
+        TrieNode root;
+
+        public Trie() {
+            this.root = new TrieNode();
+        }
+
+        public void insert(String str) {
+            TrieNode node = root;
+            for(char ch:str.toCharArray()) {
+                if(!node.contains(ch)) {
+                    node.put(ch);
+                }
+                node = node.get(ch);
+            }
+            node.setEnd();
+        }
+    }
+}
