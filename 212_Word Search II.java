@@ -57,13 +57,16 @@ class Solution {
 
 // Trie
 class Solution {
+    int[] dx = new int[] {1, -1, 0, 0};
+    int[] dy = new int[] {0, 0, 1, -1};
+
     public List<String> findWords(char[][] board, String[] words) {
         int n = board.length;
         int m = board[0].length;
         List<String> res = new ArrayList<>();
         boolean[][] visited = new boolean[n][m];
-        StringBuilder sb = new StringBuilder();
         Trie trie = new Trie();
+        StringBuilder sb = new StringBuilder();
 
         for(String str:words) {
             trie.insert(str);
@@ -71,44 +74,47 @@ class Solution {
 
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
-                dfs(board, visited, i, j, sb, trie.root, res);
+                backTrack(board, visited, trie.root, sb, i, j, res);
             }
         }
         return res;
     }
 
-    public void dfs(char[][] board, boolean[][] visited, int x, int y, StringBuilder sb, TrieNode node, List<String> res) {
-        if(node.isEnd()) {
+    public void backTrack(char[][] board, boolean[][] visited, TrieNode node, StringBuilder sb, int x, int y, List<String> res) {
+        if(node.isEnd) {
             res.add(sb.toString());
-            node.notEnd();
+            node.isEnd = false;
         }
-        if(x < 0 || x >= board.length || y < 0 || y >= board[0].length) return;
-        if(visited[x][y]) return;
 
+        if(!isValid(board, visited, x, y)) return;
         char ch = board[x][y];
         if(!node.contains(ch)) return;
 
         TrieNode parent = node;
         node = node.get(ch);
 
-        sb.append(ch);
         visited[x][y] = true;
-        dfs(board, visited, x + 1, y, sb, node, res);
-        dfs(board, visited, x - 1, y, sb, node, res);
-        dfs(board, visited, x, y + 1, sb, node, res);
-        dfs(board, visited, x, y - 1, sb, node, res);
+        sb.append(board[x][y]);
+        for(int k=0; k<4; k++) {
+            int newX = x + dx[k];
+            int newY = y + dy[k];
+            backTrack(board, visited, node, sb, newX, newY,res);
+        
+        }
         visited[x][y] = false;
         sb.deleteCharAt(sb.length() - 1);
 
         int index = 0;
         for(index=0; index<26; index++) {
-            if(node.contains(index)) break; 
+            if(node.contains(index)) break;
         }
-        if(index == 26) {
-            parent.links[ch - 'a'] = null;
-        }
-        return;
+        if(index == 26) parent.links[ch - 'a'] = null;
+    }
 
+    public boolean isValid(char[][] board, boolean[][] visited, int x, int y) {
+        if(x < 0 || x >= board.length || y < 0 || y >= board[0].length) return false;
+        if(visited[x][y]) return false;
+        return true;
     }
 
     class TrieNode {
@@ -135,18 +141,6 @@ class Solution {
         public boolean contains(int i) {
             return links[i] != null;
         }
-
-        public void setEnd() {
-            this.isEnd = true;
-        }
-
-        public void notEnd() {
-            this.isEnd = false;
-        }
-
-        public boolean isEnd() {
-            return this.isEnd;
-        }
     }
 
     class Trie {
@@ -164,7 +158,7 @@ class Solution {
                 }
                 node = node.get(ch);
             }
-            node.setEnd();
+            node.isEnd = true;
         }
     }
 }
