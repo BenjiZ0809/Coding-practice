@@ -29,28 +29,24 @@ class Solution {
 //UF
 class Solution {
     public int minCostConnectPoints(int[][] points) {
-        List<int[]> edges = new ArrayList<>();
         int n = points.length;
-        for(int i=0; i<n; i++) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        for(int i=0; i<n-1; i++) {
             for(int j=i+1; j<n; j++) {
-                int xi = points[i][0];
-                int yi = points[i][1];
-                int xj = points[j][0];
-                int yj = points[j][1];
-                int dist = Math.abs(xi - xj) + Math.abs(yi - yj);
-                edges.add(new int[] {i, j, dist});
+                int dist = Math.abs(points[i][0] - points[j][0]) + Math.abs(points[i][1] - points[j][1]);
+                pq.offer(new int[] {i, j, dist});
             }
         }
 
-        Collections.sort(edges, (a, b) -> a[2] - b[2]);
-        int res = 0;
         UF uf = new UF(n);
-        for(int[] edge:edges) {
-            int a = edge[0];
-            int b = edge[1];
-            int dist = edge[2];
-            if(uf.isConnected(a, b)) continue;
-            uf.union(a, b);
+        int res = 0;
+        while(uf.count != 1) {
+            int[] cur = pq.poll();
+            int from = cur[0];
+            int to = cur[1];
+            int dist = cur[2];
+            if(uf.isConnected(from, to)) continue;
+            uf.union(from, to);
             res += dist;
         }
         return res;
@@ -84,13 +80,7 @@ class Solution {
         }
 
         public boolean isConnected(int a, int b) {
-            int rootA = find(a);
-            int rootB = find(b);
-            return rootA == rootB;
-        }
-
-        public int count() {
-            return this.count;
+            return find(a) == find(b);
         }
     }
 }
