@@ -14,8 +14,8 @@ class Solution {
             for(int i=top; i<=bottom; i++) {
                 res.add(matrix[i][right]);
             }
-            if(!(left <= right && top <= bottom)) break;
             right--;
+            if(!(left <= right && top <= bottom)) break;
             for(int i=right; i>=left; i--) {
                 res.add(matrix[bottom][i]);
             }
