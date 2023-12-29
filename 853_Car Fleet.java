@@ -1,3 +1,4 @@
+// Approach 1 
 class Solution {
     public int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
@@ -18,5 +19,25 @@ class Solution {
             }
         }
         return fleet;
+    }
+}
+
+// Approach 2
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        double[] time = new double[target];
+        for(int i=0; i<position.length; i++) {
+            time[position[i]] = (target - position[i]) / (speed[i] * 1.0);
+        }
+
+        int res = 0;
+        double max = 0;
+        for(int i=target - 1; i>=0; i--) {
+            if(time[i] > max) {
+                max = time[i];
+                res++;
+            }
+        }
+        return res;
     }
 }
