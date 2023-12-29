@@ -1,3 +1,4 @@
+// Approach 1
 class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
         int n = temperatures.length;
@@ -10,6 +11,20 @@ class Solution {
                 res[index] = i - index;
             }
             stack.offerLast(i);
+        }
+        return res;
+    }
+}
+
+// Approach 2
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] res = new int[n];
+        for(int i=n-1; i>=0; i--) {
+            for(int j=i-1; j>=0 && temperatures[i] > temperatures[j]; j--) {
+                res[j] = i - j;
+            }
         }
         return res;
     }
