@@ -1,23 +1,24 @@
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        wordList.add(endWord);
-        Queue<State> q = new ArrayDeque<>();
-        Set<String> visited = new HashSet<>();
+        //wordList.add(endWord);
         Map<String, List<String>> graph = buildGraph(wordList);
-        q.add(new State(beginWord, 1));
+        Set<String> visited = new HashSet<>();
+        Deque<State> q = new ArrayDeque<>();
+        q.offer(new State(beginWord, 1));
         visited.add(beginWord);
-        
+
         while(!q.isEmpty()) {
             State cur = q.poll();
-            String curWord = cur.word;
-            int curDist = cur.distFromStart;
-            if(curWord.equals(endWord)) curDist;
-            for(int i=0; i<curWord.length(); i++) {
-                String key = curWord.substring(0, i) + "*" + curWord.substring(i+1, curWord.length());
-                List<String> neighbors = graph.getOrDefault(key, new ArrayList<>());
-                for(String neighbor:neighbors) {
+            String curStr = cur.str;
+            int curDist = cur.dist;
+            if(curStr.equals(endWord)) return curDist;
+            for(int i=0; i<curStr.length(); i++) {
+                String key = curStr.substring(0, i) + '*' + curStr.substring(i + 1, curStr.length());
+                List<String> list = graph.getOrDefault(key, new ArrayList<>());
+                for(String neighbor:list) {
                     if(!visited.contains(neighbor)) {
-                        q.offer(new State(neighbor, curDist + 1));
+                        int nextDist = curDist + 1;
+                        q.offer(new State(neighbor, nextDist));
                         visited.add(neighbor);
                     }
                 }
@@ -25,26 +26,27 @@ class Solution {
         }
         return 0;
     }
-    
-    private class State {
-        private String word;
-        private int distFromStart;
-        public State(String word, int dist) {
-            this.word = word;
-            this.distFromStart = dist;
-        }
-    }
-    
-    private Map<String, List<String>> buildGraph(List<String> wordList) {
+
+    public Map<String, List<String>> buildGraph(List<String> words) {
         Map<String, List<String>> graph = new HashMap<>();
-        for(String word:wordList) {
+        for(String word:words) {
             for(int i=0; i<word.length(); i++) {
-                String key = word.substring(0, i) + "*" + word.substring(i + 1, word.length());
-                List<String> neighbors = graph.getOrDefault(key, new ArrayList<>());
-                neighbors.add(word);
-                graph.put(key, neighbors);
+                String key = word.substring(0, i) + '*' + word.substring(i + 1, word.length());
+                List<String> list = graph.getOrDefault(key, new ArrayList<>());
+                list.add(word);
+                graph.put(key, list);
             }
         }
         return graph;
+    }
+
+    class State {
+        String str;
+        int dist;
+
+        public State(String str, int dist) {
+            this.str = str;
+            this.dist = dist;
+        }
     }
 }
