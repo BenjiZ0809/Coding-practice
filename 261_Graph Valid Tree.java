@@ -70,6 +70,37 @@ class Solution {
     }
 }
 
+// DFS2
+class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        if(n != edges.length + 1) return false;
+        List<Integer>[] graph = buildGraph(n, edges);
+        Set<Integer> visited = new HashSet<>();
+        dfs(graph, 0, visited);
+        return visited.size() == n;
+    }
+
+    public List<Integer>[] buildGraph(int n, int[][] edges) {
+        List<Integer>[] graph = new ArrayList[n];
+        for(int i=0; i<n; i++) graph[i] = new ArrayList<>();
+        for(int[] edge:edges) {
+            int from = edge[0];
+            int to = edge[1];
+            graph[from].add(to);
+            graph[to].add(from);
+        }
+        return graph;
+    }
+
+    public void dfs(List<Integer>[] graph, int v, Set<Integer> visited) {
+        if(visited.contains(v)) return;
+        visited.add(v);
+        for(int n:graph[v]) {
+            dfs(graph, n, visited);
+        }
+    }
+}
+
 //UF
 class Solution {
     public boolean validTree(int n, int[][] edges) {
